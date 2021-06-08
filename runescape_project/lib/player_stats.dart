@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:async';
 
 import 'models/skill.dart';
 
@@ -15,17 +17,18 @@ class _PlayerStatsState extends State<PlayerStats> {
   String player = "blood%20visage";
   Future<List<Skill>> fetchSkill() async {
     var url =
-        "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=${player}";
+        "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=blood%20visage";
     var response = await http.get(Uri.parse(url));
 
     var skillList = <Skill>[];
     var skillCount = 0;
 
     if (response.statusCode == 200) {
-      var skillResponse = response.body.split(' ');
+      var skillResponse = response.body.split('\n');
 
       for (var skill in skillResponse) {
         if (skillCount < 24) {
+          debugPrint("${skillCount} - ${skill}");
           skillList.add(Skill.fromApi(skill));
           skillCount++;
         } else
@@ -33,6 +36,15 @@ class _PlayerStatsState extends State<PlayerStats> {
       }
     }
     return skillList;
+  }
+
+  void testOutput() {
+    List<Skill> testSkills = <Skill>[
+      new Skill(rank: '1', level: '2', exp: '3')
+    ];
+    fetchSkill().then((value) => testSkills.addAll(value));
+
+    debugPrint(testSkills[1].level.toString());
   }
 
   @override
@@ -59,7 +71,10 @@ class _PlayerStatsState extends State<PlayerStats> {
         crossAxisCount: 3,
         children: [
           //----------Title----------
-          Container(),
+          Container(
+              child: IconButton(
+                  onPressed: testOutput,
+                  icon: Icon(Icons.build_circle_rounded))),
           Center(
               child: Text(
             "Player Name",

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'dart:async';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 import 'package:runescape_project/player_stats.dart';
 import 'player_search.dart';

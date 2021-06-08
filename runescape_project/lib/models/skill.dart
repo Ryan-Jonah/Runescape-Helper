@@ -1,15 +1,19 @@
+import 'package:flutter/cupertino.dart';
+
 class Skill {
-  int rank;
-  int level;
-  int exp;
+  String rank;
+  String level;
+  String exp;
 
   Skill({this.rank, this.level, this.exp});
 
   Skill.fromApi(String skill) {
     List<String> trimmedSkill = skill.split(',');
 
-    level = int.parse(trimmedSkill[0]);
-    rank = int.parse(trimmedSkill[1]);
-    exp = int.parse(trimmedSkill[2]);
+    rank = trimmedSkill[0];
+    level = trimmedSkill[1];
+    exp = trimmedSkill[2];
+    debugPrint(
+        "______________________________________-Rank: ${trimmedSkill[0]} / Level: ${trimmedSkill[1]} / Exp: ${trimmedSkill[2]}");
   }
 }
