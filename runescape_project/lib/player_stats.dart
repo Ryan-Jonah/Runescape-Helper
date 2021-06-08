@@ -13,6 +13,10 @@ class PlayerStats extends StatefulWidget {
 }
 
 class _PlayerStatsState extends State<PlayerStats> {
+  // ---Skill Order---
+  // [0-10]  Overall, Attack, Defence, Strength, Hitpoints, Ranged, Prayer, Magic, Cooking, Woodcutting,
+  // [11-20] Fletching, Fishing, Firemaking, Crafting, Smithing, Mining, Herblore, Agility, Thieving, Slayer,
+  // [21-24] Farming, Runecrafting, Hunter, Construction.
   List<Skill> _skill = <Skill>[];
   String player = "blood%20visage";
   Future<List<Skill>> fetchSkill() async {
@@ -29,22 +33,13 @@ class _PlayerStatsState extends State<PlayerStats> {
       for (var skill in skillResponse) {
         if (skillCount < 24) {
           debugPrint("${skillCount} - ${skill}");
-          skillList.add(Skill.fromApi(skill));
+          skillList.add(new Skill(skill));
           skillCount++;
         } else
           break;
       }
     }
     return skillList;
-  }
-
-  void testOutput() {
-    List<Skill> testSkills = <Skill>[
-      new Skill(rank: '1', level: '2', exp: '3')
-    ];
-    fetchSkill().then((value) => testSkills.addAll(value));
-
-    debugPrint(testSkills[1].level.toString());
   }
 
   @override
@@ -73,14 +68,15 @@ class _PlayerStatsState extends State<PlayerStats> {
           //----------Title----------
           Container(
               child: IconButton(
-                  onPressed: testOutput,
-                  icon: Icon(Icons.build_circle_rounded))),
+                  onPressed: null, icon: Icon(Icons.build_circle_rounded))),
           Center(
               child: Text(
-            "Player Name",
+            "Player Name : \n" + player,
             style: TextStyle(fontSize: 16),
           )),
-          Container(),
+          Container(
+              child: IconButton(
+                  onPressed: null, icon: Icon(Icons.build_circle_rounded))),
           //----------Row 1----------
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -91,7 +87,8 @@ class _PlayerStatsState extends State<PlayerStats> {
               Expanded(
                 child: Card(
                   child: Container(
-                      alignment: Alignment.center, child: Text("Attack")),
+                      alignment: Alignment.center,
+                      child: Text("Attack - ${_skill[1].level}")),
                 ),
               )
             ],
@@ -104,7 +101,7 @@ class _PlayerStatsState extends State<PlayerStats> {
                 child: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(0),
-                    child: const Text('Hitpoints')),
+                    child: Text('Hitpoints - ${_skill[4].level}')),
               ),
             ],
           ),
@@ -116,7 +113,7 @@ class _PlayerStatsState extends State<PlayerStats> {
                 child: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(0),
-                    child: const Text('Mining')),
+                    child: Text('Mining - ${_skill[15].level}')),
               ),
             ],
           ),
@@ -129,7 +126,7 @@ class _PlayerStatsState extends State<PlayerStats> {
                 child: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(0),
-                    child: const Text('Strength')),
+                    child: Text('Strength - ${_skill[3].level}')),
               ),
             ],
           ),
@@ -141,7 +138,7 @@ class _PlayerStatsState extends State<PlayerStats> {
                 child: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(0),
-                    child: const Text('Agility')),
+                    child: Text('Agility - ${_skill[17].level}')),
               ),
             ],
           ),
@@ -153,7 +150,7 @@ class _PlayerStatsState extends State<PlayerStats> {
                 child: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(0),
-                    child: const Text('Smiting')),
+                    child: Text('Smiting - ${_skill[14].level}')),
               ),
             ],
           ),
@@ -166,7 +163,7 @@ class _PlayerStatsState extends State<PlayerStats> {
                 child: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(0),
-                    child: const Text('Defence')),
+                    child: Text('Defence - ${_skill[2].level}')),
               ),
             ],
           ),
@@ -178,7 +175,7 @@ class _PlayerStatsState extends State<PlayerStats> {
                 child: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(0),
-                    child: const Text('Herblore')),
+                    child: Text('Herblore - ${_skill[16].level}')),
               ),
             ],
           ),
@@ -190,7 +187,7 @@ class _PlayerStatsState extends State<PlayerStats> {
                 child: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(0),
-                    child: const Text('Fishing')),
+                    child: Text('Fishing - ${_skill[11].level}')),
               ),
             ],
           ),
@@ -203,7 +200,7 @@ class _PlayerStatsState extends State<PlayerStats> {
                 child: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(0),
-                    child: const Text('Ranged')),
+                    child: Text('Ranged - ${_skill[5].level}')),
               ),
             ],
           ),
@@ -215,7 +212,7 @@ class _PlayerStatsState extends State<PlayerStats> {
                 child: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(0),
-                    child: const Text('Thieving')),
+                    child: Text('Thieving - ${_skill[18].level}')),
               ),
             ],
           ),
@@ -227,7 +224,7 @@ class _PlayerStatsState extends State<PlayerStats> {
                 child: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(0),
-                    child: const Text('Cooking')),
+                    child: Text('Cooking - ${_skill[8].level}')),
               ),
             ],
           ),
@@ -240,7 +237,7 @@ class _PlayerStatsState extends State<PlayerStats> {
                 child: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(0),
-                    child: const Text('Prayer')),
+                    child: Text('Prayer - ${_skill[6].level}')),
               ),
             ],
           ),
@@ -252,7 +249,7 @@ class _PlayerStatsState extends State<PlayerStats> {
                 child: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(0),
-                    child: const Text('Crafting')),
+                    child: Text('Crafting - ${_skill[13].level}')),
               ),
             ],
           ),
@@ -264,7 +261,7 @@ class _PlayerStatsState extends State<PlayerStats> {
                 child: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(0),
-                    child: const Text('Firemaking')),
+                    child: Text('Firemaking - ${_skill[12].level}')),
               ),
             ],
           ),
@@ -277,7 +274,7 @@ class _PlayerStatsState extends State<PlayerStats> {
                 child: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(0),
-                    child: const Text('Magic')),
+                    child: Text('Magic - ${_skill[7].level}')),
               ),
             ],
           ),
@@ -289,7 +286,7 @@ class _PlayerStatsState extends State<PlayerStats> {
                 child: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(0),
-                    child: const Text('Fletching')),
+                    child: Text('Fletching - ${_skill[10].level}')),
               ),
             ],
           ),
@@ -301,7 +298,7 @@ class _PlayerStatsState extends State<PlayerStats> {
                 child: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(0),
-                    child: const Text('Woodcutting')),
+                    child: Text('Woodcut - ${_skill[9].level}')),
               ),
             ],
           ),
@@ -313,7 +310,7 @@ class _PlayerStatsState extends State<PlayerStats> {
                   padding: EdgeInsets.only(left: 5),
                   child:
                       Image.asset("assets/skill_icons/runecrafting_icon.png")),
-              Container(child: Text("Level")),
+              Container(child: Text("${_skill[21].level}")),
               Container(padding: EdgeInsets.all(5), child: Text('RC'))
             ],
           ),
@@ -323,7 +320,9 @@ class _PlayerStatsState extends State<PlayerStats> {
               Container(
                   padding: EdgeInsets.all(5),
                   child: Image.asset("assets/skill_icons/slayer_icon.png")),
-              Container(padding: EdgeInsets.all(5), child: Text('Slayer'))
+              Container(
+                  padding: EdgeInsets.all(5),
+                  child: Text('Slayer - ${_skill[19].level}'))
             ],
           ),
           Row(
@@ -332,7 +331,9 @@ class _PlayerStatsState extends State<PlayerStats> {
               Container(
                   padding: EdgeInsets.all(5),
                   child: Image.asset("assets/skill_icons/farming_icon.png")),
-              Container(padding: EdgeInsets.all(5), child: Text('Farming'))
+              Container(
+                  padding: EdgeInsets.all(5),
+                  child: Text('Farming - ${_skill[20].level}'))
             ],
           ),
           //----------Row 8----------
@@ -344,7 +345,7 @@ class _PlayerStatsState extends State<PlayerStats> {
                 child: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(0),
-                    child: const Text('Construction')),
+                    child: Text('Const - ${_skill[23].level}')),
               ),
             ],
           ),
@@ -355,13 +356,13 @@ class _PlayerStatsState extends State<PlayerStats> {
               Container(
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(0),
-                  child: const Text('Hunter')),
+                  child: Text('Hunter - ${_skill[22].level}')),
             ],
           ),
           Container(
             alignment: Alignment.center,
             padding: const EdgeInsets.all(0),
-            child: const Text('Total'),
+            child: Text('Total - ${_skill[0].level}'),
           ),
         ],
       ),

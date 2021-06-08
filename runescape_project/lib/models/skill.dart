@@ -4,15 +4,14 @@ class Skill {
   String rank;
   String level;
   String exp;
+  List<String> trimmedSkill;
 
-  Skill({this.rank, this.level, this.exp});
+  Skill(skill) {
+    this.trimmedSkill = skill.split(',');
 
-  Skill.fromApi(String skill) {
-    List<String> trimmedSkill = skill.split(',');
-
-    rank = trimmedSkill[0];
-    level = trimmedSkill[1];
-    exp = trimmedSkill[2];
+    this.rank = trimmedSkill[0];
+    this.level = trimmedSkill[1];
+    this.exp = trimmedSkill[2];
     debugPrint(
         "______________________________________-Rank: ${trimmedSkill[0]} / Level: ${trimmedSkill[1]} / Exp: ${trimmedSkill[2]}");
   }
