@@ -12,27 +12,34 @@ class PlayerStats extends StatefulWidget {
 }
 
 class _PlayerStatsState extends State<PlayerStats> {
-  // ---Skill Order---
-  // [0-10]  Overall, Attack, Defence, Strength, Hitpoints, Ranged, Prayer, Magic, Cooking, Woodcutting,
-  // [11-20] Fletching, Fishing, Firemaking, Crafting, Smithing, Mining, Herblore, Agility, Thieving, Slayer,
-  // [21-24] Farming, Runecrafting, Hunter, Construction.
+  //skill and player data
   List<Skill> _skills = <Skill>[];
-  String player = "blood%20visage";
+  String player = "blood visage";
+
+  //obtain player's skill information via Runescape's API, then parse the data
+  //and assign it to each individual skill object to contain within a list
   Future<List<Skill>> fetchSkill() async {
+    //Set up player name for url parse
+    String playerUrl = player.replaceAll(" ", "%20");
+
+    //Runescape API call
     var url =
-        "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=blood%20visage";
+        "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=${playerUrl}";
     var response = await http.get(Uri.parse(url));
 
+    // container and counter variables
     var skillList = <Skill>[];
     var skillCount = 0;
 
+    //check if connection successful, then separate results
     if (response.statusCode == 200) {
       var skillResponse = response.body.split('\n');
 
+      //iterate over each skill result and add to skill list; adding name and img
       for (var skill in skillResponse) {
         if (skillCount < 24) {
-          //Assign skills based on API reponse order
           switch (skillCount) {
+            //Assign skills based on API reponse order
             case 0:
               skillList.add(new Skill(skill, "Total Level", "total_icon"));
               break;
@@ -118,17 +125,20 @@ class _PlayerStatsState extends State<PlayerStats> {
               break;
           }
 
+          //Testing purposes
           debugPrint("""\nSuccessfully loaded: ${skillList[skillCount].name} 
               Rank: ${skillList[skillCount].rank} / 
               Level: ${skillList[skillCount].level} / 
               Exp: ${skillList[skillCount].exp} / 
               Icon: ${skillList[skillCount].icon} """);
 
+          //counter for API reponse body
           skillCount++;
         } else
           break;
       }
     }
+    //return instantiated list of skill objects
     return skillList;
   }
 
@@ -146,7 +156,7 @@ class _PlayerStatsState extends State<PlayerStats> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            'Player Stats',
+            'Player Stats for ${player}',
           ),
           centerTitle: true,
         ),
@@ -159,21 +169,28 @@ class _PlayerStatsState extends State<PlayerStats> {
             ),
             itemCount: _skills.length,
             itemBuilder: (context, index) {
-              return Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                Container(
-                    padding: EdgeInsets.all(10),
-                    child: Image.asset(
-                        "assets/skill_icons/${_skills[index].icon}")),
-                Expanded(
-                    child: Container(
-                  alignment: Alignment.center,
-                  child: Text(
-                    _skills[index].level,
-                    overflow: TextOverflow.clip,
-                    style: TextStyle(fontSize: 24),
-                  ),
-                ))
-              ]);
+              return GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onLongPress: () {
+                    debugPrint("Experience: ${_skills[index].exp}");
+                  },
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                            padding: EdgeInsets.all(10),
+                            child: Image.asset(
+                                "assets/skill_icons/${_skills[index].icon}")),
+                        Expanded(
+                            child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            _skills[index].level,
+                            overflow: TextOverflow.clip,
+                            style: TextStyle(fontSize: 24),
+                          ),
+                        ))
+                      ]));
             }));
   }
 }
