@@ -172,6 +172,22 @@ class _PlayerStatsState extends State<PlayerStats> {
               return GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onLongPress: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Dialog(
+                              backgroundColor: Colors.black38,
+                              child: Text(
+                                """${_skills[index].name.replaceAll("Level", "")}
+                                             Level: ${_skills[index].level}
+                                             Experience: ${_skills[index].exp}
+                                             Rank: #${_skills[index].rank}""",
+                                style: TextStyle(
+                                    color: Colors.grey[100], fontSize: 24),
+                                textAlign: TextAlign.center,
+                              ));
+                        });
+
                     debugPrint("Experience: ${_skills[index].exp}");
                   },
                   child: Row(
