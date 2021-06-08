@@ -9,8 +9,13 @@ class _PlayerSearchState extends State<PlayerSearch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        title: Text('Player Search'),
+        backgroundColor: Colors.black45,
+        title: Text(
+          'Player Search',
+          style: TextStyle(color: Colors.grey[50]),
+        ),
         centerTitle: true,
       ),
       body: Column(
@@ -28,29 +33,40 @@ class _PlayerSearchState extends State<PlayerSearch> {
             width: double.infinity,
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
             child: ElevatedButton(
-                onPressed: null,
+                onPressed: () {},
                 style: ButtonStyle(
                   backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.orange),
+                      MaterialStateProperty.all<Color>(Colors.grey[800]),
                 ),
                 child: Text(
                   'Sumbit',
-                  style: TextStyle(fontSize: 24),
+                  style: TextStyle(fontSize: 24, color: Colors.white),
                 )),
           ),
           Container(
-              height: 400,
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
-              child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.black26,
-                      border: Border.all(color: Colors.black87)),
-                  padding: EdgeInsets.all(20),
-                  alignment: Alignment.topCenter,
-                  child: Text(
-                    'data',
-                    style: TextStyle(fontSize: 32),
-                  )))
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: FittedBox(
+                child: Text(
+              "Saved searched",
+              style: TextStyle(fontSize: 36),
+            )),
+          ),
+          Container(
+              child: Expanded(
+                  child: ListView.builder(
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return Container(
+                            padding: EdgeInsets.symmetric(vertical: 5),
+                            child: ElevatedButton(
+                                child: Text("Player ${index}"),
+                                style: ButtonStyle(
+                                    padding: MaterialStateProperty.all(
+                                        EdgeInsets.all(20)),
+                                    backgroundColor: MaterialStateProperty.all(
+                                        Colors.white)),
+                                onPressed: () {}));
+                      })))
         ],
       ),
     );

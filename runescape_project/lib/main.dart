@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'dart:async';
-import 'dart:convert';
-
 import 'package:runescape_project/player_stats.dart';
 import 'player_search.dart';
 
@@ -13,7 +10,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Hybrid Project',
+      debugShowCheckedModeBanner: false,
+      title: 'Runescape Project',
       theme: ThemeData(
         primarySwatch: Colors.grey,
       ),
@@ -50,9 +48,10 @@ class _MainNavState extends State<MainNav> {
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         //Styling
+        backgroundColor: Colors.black45,
         iconSize: 30.0,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.black26,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white24,
         //Updates the index when icon is tapped
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,

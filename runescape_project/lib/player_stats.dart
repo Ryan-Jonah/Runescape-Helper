@@ -15,6 +15,7 @@ class _PlayerStatsState extends State<PlayerStats> {
   //skill and player data
   List<Skill> _skills = <Skill>[];
   String player = "blood visage";
+  String totalLevel = "";
 
   //obtain player's skill information via Runescape's API, then parse the data
   //and assign it to each individual skill object to contain within a list
@@ -41,7 +42,7 @@ class _PlayerStatsState extends State<PlayerStats> {
           switch (skillCount) {
             //Assign skills based on API reponse order
             case 0:
-              skillList.add(new Skill(skill, "Total Level", "total_icon"));
+              totalLevel = skill;
               break;
             case 1:
               skillList.add(new Skill(skill, "Attack Level", "attack_icon"));
@@ -125,19 +126,15 @@ class _PlayerStatsState extends State<PlayerStats> {
               break;
           }
 
-          //Testing purposes
-          debugPrint("""\nSuccessfully loaded: ${skillList[skillCount].name} 
-              Rank: ${skillList[skillCount].rank} / 
-              Level: ${skillList[skillCount].level} / 
-              Exp: ${skillList[skillCount].exp} / 
-              Icon: ${skillList[skillCount].icon} """);
-
           //counter for API reponse body
           skillCount++;
         } else
           break;
       }
     }
+    //Add total level to the end to match the game's format
+    skillList.add(new Skill(totalLevel, "Total Level", "total_icon"));
+
     //return instantiated list of skill objects
     return skillList;
   }
@@ -154,15 +151,18 @@ class _PlayerStatsState extends State<PlayerStats> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.grey[200],
         appBar: AppBar(
+          backgroundColor: Colors.black45,
           title: Text(
             'Player Stats for ${player}',
+            style: TextStyle(color: Colors.grey[50]),
           ),
           centerTitle: true,
         ),
         body: GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              childAspectRatio: 1.5,
+              childAspectRatio: 1.85,
               crossAxisCount: 3,
               crossAxisSpacing: 5,
               mainAxisSpacing: 5,
