@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 import 'package:runescape_project/player_stats.dart';
 import 'player_search.dart';
 
@@ -46,9 +51,11 @@ class _MainNavState extends State<MainNav> {
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         //Styling
+        iconSize: 30.0,
         selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.black38,
+        unselectedItemColor: Colors.black26,
         //Updates the index when icon is tapped
+        currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         //Navigation Links
         items: [
