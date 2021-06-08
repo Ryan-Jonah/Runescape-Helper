@@ -11,6 +11,7 @@ class _PlayerSearchState extends State<PlayerSearch> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Player Search'),
+        centerTitle: true,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
