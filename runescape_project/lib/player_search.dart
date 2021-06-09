@@ -28,7 +28,6 @@ class _PlayerSearchState extends State<PlayerSearch> {
   //Reload database items into the players list to display
   void _updatePlayerList() async {
     final allRows = await dbHelper.queryAllRows();
-    print("Query all rows");
     players.clear();
     for (final r in allRows) {
       players.add(r["name"].toString());
@@ -126,7 +125,7 @@ class _PlayerSearchState extends State<PlayerSearch> {
                                     backgroundColor: MaterialStateProperty.all(
                                         Colors.white)),
                                 onPressed: () {
-                                  Players.currentPlayer = _playerName.text;
+                                  Players.currentPlayer = players[index];
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
