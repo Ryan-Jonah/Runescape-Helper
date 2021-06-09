@@ -1,11 +1,23 @@
-import 'dart:convert';
+import 'dbhelper.dart';
 
 class Players {
-  final String name;
+  /*
+  global variable for storing the most recently selected player
+  used to allow viewing of the stats page via navigation bar
+  */
+  static String currentPlayer = "%None%";
 
-  Players(this.name);
+  int playerId;
 
-  Players.fromJson(Map<String, dynamic> json) : name = json["name"];
+  Players(this.playerId);
 
-  Map<String, dynamic> toJson() => {'name': name};
+  Players.fromMap(Map<String, dynamic> map) {
+    playerId = map['id'];
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      DBHelper.colId: playerId,
+    };
+  }
 }

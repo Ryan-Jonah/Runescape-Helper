@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:runescape_project/player_stats.dart';
+import 'models/players.dart';
 import 'player_search.dart';
 
 void main() => runApp(MyApp());
@@ -29,7 +30,7 @@ class _MainNavState extends State<MainNav> {
   //Pages to load
   final List<Widget> _pages = [
     PlayerSearch(),
-    PlayerStats(),
+    PlayerStats(playerName: Players.currentPlayer),
   ];
 
   //Index to select the current page from _pages

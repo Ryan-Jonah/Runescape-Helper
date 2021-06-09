@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:convert/convert.dart';
+import 'models/dbhelper.dart';
 
 import 'player_stats.dart';
+import 'models/players.dart';
 
 class PlayerSearch extends StatefulWidget {
   @override
@@ -12,9 +12,37 @@ class PlayerSearch extends StatefulWidget {
 class _PlayerSearchState extends State<PlayerSearch> {
   final TextEditingController _playerName = TextEditingController();
 
-  List<String> players = ["Blood Visage"];
+  final dbHelper = DBHelper.instance;
+
+  //Store history of searched players
+  List<String> players = [];
+
+  void _insert() async {
+    Map<String, dynamic> row = {
+      DBHelper.colName: Players.currentPlayer,
+    };
+    final id = await dbHelper.insert(row);
+    print('inserted row id is: $id');
+  }
+
+  //Reload database items into the players list to display
+  void _updatePlayerList() async {
+    final allRows = await dbHelper.queryAllRows();
+    print("Query all rows");
+    players.clear();
+    for (final r in allRows) {
+      players.add(r["name"].toString());
+    }
+  }
 
   @override
+  void initState() {
+    setState(() {
+      _updatePlayerList();
+    });
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
@@ -29,6 +57,7 @@ class _PlayerSearchState extends State<PlayerSearch> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          //Player Search box
           Container(
             padding: EdgeInsets.fromLTRB(40, 40, 40, 10),
             child: TextField(
@@ -38,20 +67,27 @@ class _PlayerSearchState extends State<PlayerSearch> {
               controller: _playerName,
             ),
           ),
+          //Player Search button
           Container(
             width: double.infinity,
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
             child: ElevatedButton(
                 onPressed: () {
+                  //Set the current player and open the stat page
+                  Players.currentPlayer = _playerName.text;
+                  _insert();
+                  _updatePlayerList();
                   setState(() {
-                    players.add(_playerName.text);
+                    //Add searched player name to first of the list
+                    players.insert(0, Players.currentPlayer);
                   });
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => PlayerStats(
-                              playerName: players[
-                                  players.lastIndexOf(_playerName.text)])));
+                              playerName: players[players
+                                  .lastIndexOf(Players.currentPlayer)])));
                 },
                 style: ButtonStyle(
                   backgroundColor:
@@ -62,6 +98,7 @@ class _PlayerSearchState extends State<PlayerSearch> {
                   style: TextStyle(fontSize: 24, color: Colors.white),
                 )),
           ),
+          //Pleyer search history
           Container(
             padding: EdgeInsets.symmetric(vertical: 10),
             child: FittedBox(
@@ -70,6 +107,7 @@ class _PlayerSearchState extends State<PlayerSearch> {
               style: TextStyle(fontSize: 36),
             )),
           ),
+          //Create a button for each player linking to the stats page
           Container(
               child: Expanded(
                   child: ListView.builder(
@@ -88,6 +126,7 @@ class _PlayerSearchState extends State<PlayerSearch> {
                                     backgroundColor: MaterialStateProperty.all(
                                         Colors.white)),
                                 onPressed: () {
+                                  Players.currentPlayer = _playerName.text;
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(

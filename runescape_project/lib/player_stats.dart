@@ -3,8 +3,10 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 
 import 'models/skill.dart';
+import 'models/players.dart';
 
 class PlayerStats extends StatefulWidget {
+  //obtain player name from search page
   final String playerName;
   const PlayerStats({Key key, @required this.playerName}) : super(key: key);
 
@@ -13,15 +15,13 @@ class PlayerStats extends StatefulWidget {
 }
 
 class _PlayerStatsState extends State<PlayerStats> {
-  //skill and player data
   List<Skill> _skills = <Skill>[];
-  String totalLevel = "";
 
   //obtain player's skill information via Runescape's API, then parse the data
   //and assign it to each individual skill object to contain within a list
   Future<List<Skill>> fetchSkill() async {
     //Set up player name for url parse
-    String playerUrl = widget.playerName.replaceAll(" ", "%20");
+    String playerUrl = Players.currentPlayer.replaceAll(" ", "%20");
 
     //Runescape API call
     var url =
@@ -142,6 +142,14 @@ class _PlayerStatsState extends State<PlayerStats> {
     return skillList;
   }
 
+  //Blank title for empty string
+  String getTitle(String playerName) {
+    if (playerName != "%None%") {
+      return 'Player Stats for $playerName';
+    } else
+      return "Player Stats";
+  }
+
   @override
   void initState() {
     fetchSkill().then((value) {
@@ -158,7 +166,7 @@ class _PlayerStatsState extends State<PlayerStats> {
         appBar: AppBar(
           backgroundColor: Colors.black45,
           title: Text(
-            'Player Stats for ${widget.playerName}',
+            getTitle(Players.currentPlayer),
             style: TextStyle(color: Colors.grey[50]),
           ),
           centerTitle: true,

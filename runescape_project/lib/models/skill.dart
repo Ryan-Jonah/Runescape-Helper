@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 
 class Skill {
+  String name;
+  String icon;
+  //Results from API call
   String rank;
   String level;
   String exp;
-  String name;
-  String icon;
 
   List<String> trimmedSkill;
 
