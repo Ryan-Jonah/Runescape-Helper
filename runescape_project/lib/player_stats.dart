@@ -132,9 +132,10 @@ class _PlayerStatsState extends State<PlayerStats> {
         } else
           break;
       }
-    } else {
+    } else if (response.body.contains("404 - Page not found") == true ||
+        widget.playerName == null) {
       skillList
-          .add(new Skill("404,404,404", "404: Player not found", "total_icon"));
+          .add(new Skill("404,404,404", "404: Player not found", "404_icon"));
     }
 
     //return instantiated list of skill objects

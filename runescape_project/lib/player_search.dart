@@ -46,6 +46,12 @@ class _PlayerSearchState extends State<PlayerSearch> {
                   setState(() {
                     players.add(_playerName.text);
                   });
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PlayerStats(
+                              playerName: players[
+                                  players.lastIndexOf(_playerName.text)])));
                 },
                 style: ButtonStyle(
                   backgroundColor:
