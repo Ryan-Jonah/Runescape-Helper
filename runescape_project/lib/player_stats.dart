@@ -5,7 +5,8 @@ import 'dart:async';
 import 'models/skill.dart';
 
 class PlayerStats extends StatefulWidget {
-  const PlayerStats({Key key}) : super(key: key);
+  final String playerName;
+  const PlayerStats({Key key, @required this.playerName}) : super(key: key);
 
   @override
   _PlayerStatsState createState() => _PlayerStatsState();
@@ -14,14 +15,13 @@ class PlayerStats extends StatefulWidget {
 class _PlayerStatsState extends State<PlayerStats> {
   //skill and player data
   List<Skill> _skills = <Skill>[];
-  String player = "blood visage";
   String totalLevel = "";
 
   //obtain player's skill information via Runescape's API, then parse the data
   //and assign it to each individual skill object to contain within a list
   Future<List<Skill>> fetchSkill() async {
     //Set up player name for url parse
-    String playerUrl = player.replaceAll(" ", "%20");
+    String playerUrl = widget.playerName.replaceAll(" ", "%20");
 
     //Runescape API call
     var url =
@@ -33,7 +33,8 @@ class _PlayerStatsState extends State<PlayerStats> {
     var skillCount = 0;
 
     //check if connection successful, then separate results
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 &&
+        response.body.contains("404 - Page not found") == false) {
       var skillResponse = response.body.split('\n');
 
       //iterate over each skill result and add to skill list; adding name and img
@@ -42,7 +43,7 @@ class _PlayerStatsState extends State<PlayerStats> {
           switch (skillCount) {
             //Assign skills based on API reponse order
             case 0:
-              totalLevel = skill;
+              skillList.add(new Skill(skill, "Total Level", "total_icon"));
               break;
             case 1:
               skillList.add(new Skill(skill, "Attack Level", "attack_icon"));
@@ -131,9 +132,10 @@ class _PlayerStatsState extends State<PlayerStats> {
         } else
           break;
       }
+    } else {
+      skillList
+          .add(new Skill("404,404,404", "404: Player not found", "total_icon"));
     }
-    //Add total level to the end to match the game's format
-    skillList.add(new Skill(totalLevel, "Total Level", "total_icon"));
 
     //return instantiated list of skill objects
     return skillList;
@@ -155,7 +157,7 @@ class _PlayerStatsState extends State<PlayerStats> {
         appBar: AppBar(
           backgroundColor: Colors.black45,
           title: Text(
-            'Player Stats for ${player}',
+            'Player Stats for ${widget.playerName}',
             style: TextStyle(color: Colors.grey[50]),
           ),
           centerTitle: true,

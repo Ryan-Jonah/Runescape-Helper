@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:convert/convert.dart';
+
+import 'player_stats.dart';
 
 class PlayerSearch extends StatefulWidget {
   @override
@@ -6,6 +10,10 @@ class PlayerSearch extends StatefulWidget {
 }
 
 class _PlayerSearchState extends State<PlayerSearch> {
+  final TextEditingController _playerName = TextEditingController();
+
+  List<String> players = ["Blood Visage"];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,13 +35,18 @@ class _PlayerSearchState extends State<PlayerSearch> {
               scrollPadding: EdgeInsets.all(20),
               decoration: InputDecoration(
                   border: OutlineInputBorder(), labelText: "Search Player"),
+              controller: _playerName,
             ),
           ),
           Container(
             width: double.infinity,
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
             child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    players.add(_playerName.text);
+                  });
+                },
                 style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all<Color>(Colors.grey[800]),
@@ -47,25 +60,34 @@ class _PlayerSearchState extends State<PlayerSearch> {
             padding: EdgeInsets.symmetric(vertical: 10),
             child: FittedBox(
                 child: Text(
-              "Saved searched",
+              "Searched Players",
               style: TextStyle(fontSize: 36),
             )),
           ),
           Container(
               child: Expanded(
                   child: ListView.builder(
-                      itemCount: 5,
+                      itemCount: players.length,
                       itemBuilder: (context, index) {
                         return Container(
                             padding: EdgeInsets.symmetric(vertical: 5),
                             child: ElevatedButton(
-                                child: Text("Player ${index}"),
+                                child: Text(
+                                  players[index],
+                                  style: TextStyle(fontSize: 18),
+                                ),
                                 style: ButtonStyle(
                                     padding: MaterialStateProperty.all(
                                         EdgeInsets.all(20)),
                                     backgroundColor: MaterialStateProperty.all(
                                         Colors.white)),
-                                onPressed: () {}));
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => PlayerStats(
+                                              playerName: players[index])));
+                                }));
                       })))
         ],
       ),
