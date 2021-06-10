@@ -198,8 +198,6 @@ class _PlayerStatsState extends State<PlayerStats> {
                                 textAlign: TextAlign.center,
                               ));
                         });
-
-                    debugPrint("Experience: ${_skills[index].exp}");
                   },
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
