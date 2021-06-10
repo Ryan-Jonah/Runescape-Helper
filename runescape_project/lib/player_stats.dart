@@ -144,7 +144,7 @@ class _PlayerStatsState extends State<PlayerStats> {
 
   //Blank title for empty string
   String getTitle(String playerName) {
-    if (playerName != "%None%") {
+    if (playerName != "%None%" && playerName.isNotEmpty) {
       return 'Player Stats for $playerName';
     } else
       return "Player Stats";
