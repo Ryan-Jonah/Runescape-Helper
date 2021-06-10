@@ -28,17 +28,15 @@ class _PlayerSearchState extends State<PlayerSearch> {
   //Reload database items into the players list to display
   void _updatePlayerList() async {
     final allRows = await dbHelper.queryAllRows();
-    players.clear();
     for (final r in allRows) {
       players.add(r["name"].toString());
     }
+    setState(() {});
   }
 
   @override
   void initState() {
-    setState(() {
-      _updatePlayerList();
-    });
+    _updatePlayerList();
     super.initState();
   }
 
